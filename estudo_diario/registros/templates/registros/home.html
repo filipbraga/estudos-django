@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Base de Conhecimento</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #222222; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; background-color: white; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; color: #333; }
+        tr:hover { background-color: #f1f1f1; }
+        
+        .btn-novo { 
+            text-decoration: none; 
+            background: #28a745; 
+            color: white; 
+            padding: 10px 15px; 
+            border-radius: 5px; 
+            font-weight: bold;
+        }
+        
+        .btn-excluir {
+            color: #d9534f;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid #d9534f;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .btn-excluir:hover {
+            background-color: #d9534f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;color: #ddd;">Gerenciador de Estudos</h1>
+    
+    <a href="{% url 'cadastro' %}" class="btn-novo">
+        + Novo Registro
+    </a>
+
+    <br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Título da Aula</th>
+                <th>Data</th>
+                <th>Dificuldade</th>
+                <th>Resumo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+            <tr>
+                <td><strong>{{ registro.titulo_aula }}</strong></td>
+                <td>{{ registro.data|date:"d/m/Y" }}</td>
+                <td>{{ registro.dificuldade }}/5</td>
+                <td>{{ registro.resumo|truncatewords:20 }}</td>
+                <td>
+                    <a href="{% url 'excluir' registro.id %}" 
+                       class="btn-excluir"
+                       onclick="return confirm('Tem certeza que deseja apagar este registro?')">
+                       Excluir
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Nenhum estudo registrado ainda. Clique em "+ Novo Registro" para começar!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
