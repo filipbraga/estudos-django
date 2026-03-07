@@ -1,10 +1,14 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from registros import views # Importa as views
+from django.contrib.auth import views as auth_views # Importe as views de auth
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('registros/', include('registros.urls')), # Inclui as rotas do app
-    path('', views.home, name='home'), # Define a home na raiz do site 
+    
+    
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='registros/login.html'), name='login'),
+    
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('registros.urls')), 
 ]
