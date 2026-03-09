@@ -1,31 +1,206 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Novo Registro - Estudo Diário</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        h1 { color: #333; }
-        .btn-salvar { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-        .btn-cancelar { color: #666; text-decoration: none; margin-left: 15px; }
-        form p { margin-bottom: 15px; }
-        input, textarea, select { width: 100%; padding: 8px; margin-top: 5px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Registro - Estudo Diário</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: #1e1e2e;
+      --accent: #7c6aff;
+      --accent-soft: rgba(124, 106, 255, 0.12);
+      --accent-hover: #6a58ee;
+      --text: #e8e8f0;
+      --muted: #5a5a7a;
+      --success: #3ddba8;
+      --danger: #ff6b6b;
+      --input-bg: #0e0e16;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124,106,255,0.18) 0%, transparent 60%);
+    }
+
+    .container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,106,255,0.08);
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    /* Estiliza os campos gerados pelo Django form.as_p */
+    form p {
+      margin-bottom: 20px;
+    }
+
+    form p label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    form p input,
+    form p textarea,
+    form p select {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      margin-top: 0;
+    }
+
+    form p input::placeholder,
+    form p textarea::placeholder {
+      color: var(--muted);
+    }
+
+    form p input:focus,
+    form p textarea:focus,
+    form p select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,106,255,0.15);
+    }
+
+    form p textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    form p select option {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-salvar {
+      flex: 1;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(124,106,255,0.3);
+    }
+
+    .btn-salvar:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(124,106,255,0.4);
+    }
+
+    .btn-salvar:active { transform: translateY(0); }
+
+    .btn-cancelar {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-cancelar:hover { color: var(--danger); }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1> Novo Registro de Estudo</h1>
-        <p>Preencha os detalhes da aula de hoje para sua base de conhecimento.</p>
-        <hr>
+  <div class="container">
+    <p class="eyebrow">Estudo Diário</p>
+    <h1>Novo <span>Registro</span></h1>
+    <p class="subtitle">Preencha os detalhes da aula de hoje para sua base de conhecimento.</p>
+    <hr class="divider">
 
-        <form method="POST">
-            {% csrf_token %} {{ form.as_p }} <br>
-            <button type="submit" class="btn-salvar">Salvar Estudo</button>
-            <a href="{% url 'home' %}" class="btn-cancelar">Cancelar</a>
-        </form>
-    </div>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button type="submit" class="btn-salvar">Salvar Estudo</button>
+        <a href="{% url 'home' %}" class="btn-cancelar">Cancelar</a>
+      </div>
+    </form>
+  </div>
 
 </body>
 </html>

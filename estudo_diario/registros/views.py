@@ -8,7 +8,7 @@ def home(request):
     return render(request, 'registros/home.html', {'registros': registros})
 
 def cadastro(request):
-    #Verifica se o metodo de requisição e POST
+    # Verifica se o metodo de requisição e POST
     if request.method == 'POST':
         form = RegistroEstudoForm(request.POST) 
         if form.is_valid():

@@ -1,84 +1,296 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Progresso</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #222222; }
-        h1 { color: #333; }
-        table { width: 100%; border-collapse: collapse; background-color: white; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f2f2f2; color: #333; }
-        tr:hover { background-color: #f1f1f1; }
-        
-        .btn-novo { 
-            text-decoration: none; 
-            background: #28a745; 
-            color: white; 
-            padding: 10px 15px; 
-            border-radius: 5px; 
-            font-weight: bold;
-        }
-        
-        .btn-excluir {
-            color: #d9534f;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 5px 10px;
-            border: 1px solid #d9534f;
-            border-radius: 4px;
-            transition: 0.3s;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Progresso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .btn-excluir:hover {
-            background-color: #d9534f;
-            color: white;
-        }
-    </style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: #1e1e2e;
+      --accent: #7c6aff;
+      --accent-soft: rgba(124, 106, 255, 0.12);
+      --accent-hover: #6a58ee;
+      --text: #e8e8f0;
+      --muted: #5a5a7a;
+      --success: #3ddba8;
+      --danger: #ff6b6b;
+      --danger-soft: rgba(255, 107, 107, 0.1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 60px 24px;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124,106,255,0.18) 0%, transparent 60%);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: auto;
+    }
+
+    /* HEADER */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 36px;
+    }
+
+    .page-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .page-title span { color: var(--accent); }
+
+    .btn-novo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 10px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(124,106,255,0.3);
+      white-space: nowrap;
+    }
+
+    .btn-novo:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(124,106,255,0.4);
+    }
+
+    /* TABLE */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,106,255,0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: rgba(124, 106, 255, 0.07);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 16px 20px;
+      text-align: left;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.18s ease;
+      animation: fadeSlide 0.4s ease both;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--accent-soft); }
+
+    td {
+      padding: 14px 20px;
+      font-size: 0.875rem;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .td-titulo strong {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .td-data {
+      color: var(--muted);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .dificuldade-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .dif-1, .dif-2 {
+      background: rgba(61, 219, 168, 0.1);
+      border: 1px solid rgba(61, 219, 168, 0.25);
+      color: var(--success);
+    }
+
+    .dif-3 {
+      background: rgba(255, 200, 80, 0.1);
+      border: 1px solid rgba(255, 200, 80, 0.25);
+      color: #ffc850;
+    }
+
+    .dif-4, .dif-5 {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.25);
+      color: var(--danger);
+    }
+
+    .td-resumo {
+      color: var(--muted);
+      font-size: 0.82rem;
+      max-width: 280px;
+    }
+
+    .btn-excluir {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--danger);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid rgba(255,107,107,0.3);
+      border-radius: 6px;
+      background: var(--danger-soft);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-excluir:hover {
+      background: rgba(255,107,107,0.2);
+      border-color: var(--danger);
+      transform: translateY(-1px);
+    }
+
+    .empty-row td {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .empty-icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    tbody tr:nth-child(1) { animation-delay: 0.05s; }
+    tbody tr:nth-child(2) { animation-delay: 0.10s; }
+    tbody tr:nth-child(3) { animation-delay: 0.15s; }
+    tbody tr:nth-child(4) { animation-delay: 0.20s; }
+    tbody tr:nth-child(5) { animation-delay: 0.25s; }
+    tbody tr:nth-child(6) { animation-delay: 0.30s; }
+    tbody tr:nth-child(7) { animation-delay: 0.35s; }
+    tbody tr:nth-child(8) { animation-delay: 0.40s; }
+  </style>
 </head>
 <body>
 
-    <h1 style="text-align: center;color: #ddd;">Gerenciador de Estudos</h1>
-    
-    <a href="{% url 'cadastro' %}" class="btn-novo">
-        + Novo Registro
-    </a>
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <p class="page-eyebrow">Base de conhecimento</p>
+        <h1 class="page-title">Gerenciador de <span>Estudos</span></h1>
+      </div>
+      <a href="{% url 'cadastro' %}" class="btn-novo">+ Novo Registro</a>
+    </div>
 
-    <br><br>
-
-    <table>
+    <div class="table-wrap">
+      <table>
         <thead>
-            <tr>
-                <th>Título da Aula</th>
-                <th>Data</th>
-                <th>Dificuldade</th>
-                <th>Resumo</th>
-                <th>Ações</th>
-            </tr>
+          <tr>
+            <th>Título da Aula</th>
+            <th>Data</th>
+            <th>Dificuldade</th>
+            <th>Resumo</th>
+            <th>Ações</th>
+          </tr>
         </thead>
         <tbody>
-            {% for registro in registros %}
-            <tr>
-                <td><strong>{{ registro.titulo_aula }}</strong></td>
-                <td>{{ registro.data|date:"d/m/Y" }}</td>
-                <td>{{ registro.dificuldade }}/5</td>
-                <td>{{ registro.resumo|truncatewords:20 }}</td>
-                <td>
-                    <a href="{% url 'excluir' registro.id %}" 
-                       class="btn-excluir"
-                       onclick="return confirm('Tem certeza que deseja apagar este registro?')">
-                       Excluir
-                    </a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" style="text-align: center;">Nenhum estudo registrado ainda. Clique em "+ Novo Registro" para começar!</td>
-            </tr>
-            {% endfor %}
+          {% for registro in registros %}
+          <tr>
+            <td class="td-titulo"><strong>{{ registro.titulo_aula }}</strong></td>
+            <td class="td-data">{{ registro.data|date:"d/m/Y" }}</td>
+            <td>
+              <span class="dificuldade-pill dif-{{ registro.dificuldade }}">
+                {{ registro.dificuldade }}/5
+              </span>
+            </td>
+            <td class="td-resumo">{{ registro.resumo|truncatewords:20 }}</td>
+            <td>
+              <a href="{% url 'excluir' registro.id %}"
+                 class="btn-excluir"
+                 onclick="return confirm('Tem certeza que deseja apagar este registro?')">
+                Excluir
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="empty-row">
+            <td colspan="5">
+              <span class="empty-icon">📚</span>
+              Nenhum estudo registrado ainda.<br>
+              Clique em <strong>+ Novo Registro</strong> para começar!
+            </td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+
+    <div class="footer">{{ registros|length }} registro(s) encontrado(s)</div>
+  </div>
 
 </body>
 </html>
